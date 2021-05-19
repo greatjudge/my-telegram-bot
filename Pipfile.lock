@@ -1,0 +1,105 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "27d0566c4ae516d0e237a87668482fac5b4ccfd4317a4f7dbda773d0354c2043"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.9"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "certifi": {
+            "hashes": [
+                "sha256:1a4995114262bffbc2413b159f2a1a480c969de6e6eb13ee966d470af86af59c",
+                "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"
+            ],
+            "version": "==2020.12.5"
+        },
+        "chardet": {
+            "hashes": [
+                "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa",
+                "sha256:f864054d66fd9118f2e67044ac8981a54775ec5b67aed0441892edb553d21da5"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
+            "version": "==4.0.0"
+        },
+        "geographiclib": {
+            "hashes": [
+                "sha256:12bd46ee7ec25b291ea139b17aa991e7ef373e21abd053949b75c0e9ca55c632",
+                "sha256:51cfa698e7183792bce27d8fb63ac8e83689cd8170a730bf35e1a5c5bf8849b9"
+            ],
+            "version": "==1.50"
+        },
+        "geopy": {
+            "hashes": [
+                "sha256:4db8a2b79a2b3358a7d020ea195be639251a831a1b429c0d1b20c9f00c67c788",
+                "sha256:892b219413e7955587b029949af3a1949c6fbac9d5ad17b79d850718f6a9550f"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
+        },
+        "idna": {
+            "hashes": [
+                "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6",
+                "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==2.10"
+        },
+        "mariadb": {
+            "hashes": [
+                "sha256:198c5838feffbfba7a2170f03170aec1b5628a2247365321a71fc5302f584331",
+                "sha256:53fec3d910616b8c3aa1631cbf82a8b4fc0329ecec79c799c670d1e93e0ee0ca",
+                "sha256:6937a848408bc249c7c7f8b14bd0ecf4e7b3364544a6b3255df5831fb733191f",
+                "sha256:6a299506339f8f7ddb136b5c8e9babc3497c3167be5f6e322638f772bdee3fa3",
+                "sha256:838fc5a365e1c89bf4c5733a06b67bd512a3aa96672a92d608aab2e5c114423c",
+                "sha256:aeb692f0748e22a5aa7a15c30a2921a57de940008b3937a56840d3c2db257e1b",
+                "sha256:b661afc956a74ed105955eea8bc3233bb2ce203a2e6131e1a692d256d732d4f9",
+                "sha256:c69b56152632e6af6de0aa1615ce69d3bf92970b0b197f8e3c025c7f55b63e39",
+                "sha256:ee6072c120c303c62e5ed2e896225d24d152e38d624c977f8ad287edb9855c3b"
+            ],
+            "index": "pypi",
+            "version": "==1.0.6"
+        },
+        "pytelegrambotapi": {
+            "hashes": [
+                "sha256:7774314ff429852d423d5dfebe8fc1011dca93a028f1ccb0c56db6817245b752"
+            ],
+            "index": "pypi",
+            "version": "==3.7.9"
+        },
+        "python-dotenv": {
+            "hashes": [
+                "sha256:00aa34e92d992e9f8383730816359647f358f4a3be1ba45e5a5cefd27ee91544",
+                "sha256:b1ae5e9643d5ed987fc57cc2583021e38db531946518130777734f9589b3141f"
+            ],
+            "index": "pypi",
+            "version": "==0.17.1"
+        },
+        "requests": {
+            "hashes": [
+                "sha256:27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804",
+                "sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
+            "version": "==2.25.1"
+        },
+        "urllib3": {
+            "hashes": [
+                "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
+                "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
+            "version": "==1.26.4"
+        }
+    },
+    "develop": {}
+}
