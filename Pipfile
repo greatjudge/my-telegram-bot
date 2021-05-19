@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 pytelegrambotapi = "*"
 python-dotenv = "*"
-mariadb = "*"
-geopy = "*"
+gunicorn = "*"
+mysql = "*"
 
 [dev-packages]
 
