@@ -5,8 +5,8 @@ from place import Place
 from state import State
 
 
-state = State()
 bot = telebot.TeleBot(get_token())
+state = State()
 
 
 def send_add_dilog(message):

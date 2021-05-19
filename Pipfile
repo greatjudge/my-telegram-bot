@@ -7,7 +7,7 @@ name = "pypi"
 pytelegrambotapi = "*"
 python-dotenv = "*"
 gunicorn = "*"
-mysql = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 

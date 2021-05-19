@@ -20,7 +20,8 @@ class State:
         self.__states = defaultdict(lambda : self.START)
         self.__user_place = defaultdict(lambda : Place())
         self.__user_count = dict()
-        self.__base=MariaBase()
+        self.__base=MysqlBase()
+        self.__base.create_tables()
 
     def check(self, id, state):
         return self.__states[id] == state
