@@ -1,1 +1,1 @@
-web: gunicorn placebot:placebot.py
+web: gunicorn placebot:placebot
