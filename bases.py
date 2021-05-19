@@ -1,5 +1,5 @@
 import os
-import mariadb
+import mysql
 import sys
 
 from abc import ABC, abstractmethod
@@ -29,7 +29,7 @@ class AbstractBase(ABC):
 
 
 # Connect to MariaDB Platform
-class MariaBase(AbstractBase):
+class MysqlBase(AbstractBase):
     def __init__(self):
         pass
 

@@ -2,7 +2,7 @@ import requests
 import os
 
 from collections import defaultdict
-from bases import MariaBase
+from bases import MysqlBase
 from place import Place
 
 class State:
