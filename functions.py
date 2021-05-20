@@ -39,7 +39,10 @@ def create_filename(user_id, extension):
 
 def get_photopath(user_id):
     extension = 'jpg' # FIX png ...
-    if not os.path.isdir(f'photos/{user_id}'):
+    # FIX relocate in init proj
+    if not os.path.isdir('photos/'):
+        os.mkdir('photos')
+    if not os.path.isdir(f'/photos/{user_id}'):
         os.mkdir(f'photos/{user_id}')
     photopath = f'photos/{user_id}/{create_filename(user_id, extension)}'
     return photopath
