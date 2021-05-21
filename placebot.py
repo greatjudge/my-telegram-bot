@@ -91,7 +91,7 @@ def add_no(callback_query):
 
 
 # ADDR
-@bot.message_handler(func=lambda m: state.check(m.chat.id, state.ADDR))
+@bot.message_handler(func=lambda m: state.check(m.chat.id, state.ADDR), content_types=['text'])
 def add_address(message):
     state.places(message.chat.id).address = message.text
     state.set_state(message.chat.id, state.ADD)
@@ -107,7 +107,7 @@ def add_location(message):
 
 
 # DESCRIPTION
-@bot.message_handler(func=lambda m: state.check(m.chat.id, state.DES))
+@bot.message_handler(func=lambda m: state.check(m.chat.id, state.DES), content_types=['text'])
 def add_description(message):
     state.places(message.chat.id).description = message.text
     state.set_state(message.chat.id, state.ADD)

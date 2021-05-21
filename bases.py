@@ -39,6 +39,7 @@ class MysqlBase(AbstractBase):
                   latitude Decimal(8, 6) UNSIGNED,
                   longitude Decimal(9, 6) UNSIGNED,
                   photopath VARCHAR(200),
+                  photo LONGBLOB,
                   user_id INT NOT NULL,
                   date_cr DATETIME DEFAULT CURRENT_TIMESTAMP,
                   FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE)"""}
@@ -65,9 +66,12 @@ class MysqlBase(AbstractBase):
         cursor = connection.cursor()
         for table_name in self.TABLES:
             table_description = self.TABLES[table_name]
+            query = f"SHOW TABLES like '{table_name}'"
             try:
-                print("Creating table {}: ".format(table_name), end='')
-                cursor.execute(table_description)
+                cursor.execute(query)
+                if not cursor.fetchall():
+                    print("Creating table {}: ".format(table_name), end='')
+                    cursor.execute(table_description)
             except connector.Error as err:
                 if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                     print("already exists.")
@@ -108,6 +112,8 @@ class MysqlBase(AbstractBase):
         # FIX... user data must be a function argument
         data = place.data
         data['user_id'] = user_id
+        if place.photopath:
+            data['photo'] = read_photo(place.photopath)
         q = ['%s'] * len(data.values())
         query = f'INSERT INTO place ({", ".join([str(v) for v in data.keys()])}) VALUES ({",".join(q)})'
         try:
@@ -134,3 +140,13 @@ class MysqlBase(AbstractBase):
             delete_photos(user_id)
         except connector.Error as e:
             print(f'Error delete: {e}')
+
+    def init_photos(self):
+        query = 'SELECT user_id, photopath, photo FROM place'
+        delete_all_photos()
+        connection = self.connect()
+        cursor = connection.cursor()
+        cursor.execute(query)
+        for uid, photopath, photo in cursor.fetchall():
+            if uid and photopath and photo:
+                add_photo(uid, photopath, photo)

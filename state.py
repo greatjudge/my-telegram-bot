@@ -22,6 +22,7 @@ class State:
         self.__user_count = dict()
         self.__base=MysqlBase()
         self.__base.create_tables()
+        self.__base.init_photos()
 
     def check(self, id, state):
         return self.__states[id] == state

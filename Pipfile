@@ -8,6 +8,7 @@ pytelegrambotapi = "*"
 python-dotenv = "*"
 mysql-connector-python = "*"
 boto3 = "*"
+awscli = "*"
 
 [dev-packages]
 
