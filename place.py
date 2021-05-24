@@ -27,10 +27,7 @@ class Place:
                                                                 and k in self.fields}
         if not clean_data.get('address') and 'latitude' in clean_data and 'longitude' in clean_data:
             clean_data['address'] = self.get_addr_from_loc((clean_data['latitude'], clean_data['longitude']))
-        print('__data', self.__data)
         self.__data = clean_data
-        print('__ data', self.__data)
-        print()
         return clean_data.copy()
 
     def clean_latlon(self):
@@ -57,7 +54,6 @@ class Place:
         data.pop('latitude', None)
         data.pop('photopath', None)
         if self.location:
-            print(self.location)
             data['location'] = self.location
         if self.photopath:
             data['photo'] = self.photopath
