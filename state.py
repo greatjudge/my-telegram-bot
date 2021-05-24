@@ -101,7 +101,7 @@ class State:
                                                                       element['status'].lower() == 'ok'
                                                                       and addr
                                                                       and place.location]
-                all.sort(key=lambda x: x[0][1], reverse=False)
+                all.sort(key=lambda x: x[0][1], reverse=True)
                 return all[:count]
             else:
                 return []
