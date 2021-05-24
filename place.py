@@ -23,10 +23,10 @@ class Place:
     def clean(self):
         clean_data = {k: v for k, v in self.__data.items() if not v is None
                                                                 and k in self.fields}
-        #   self.__data = clean_data
         self.clean_latlon()
         if not clean_data.get('address') and 'latitude' in clean_data and 'longitude' in clean_data:
             clean_data['address'] = self.get_addr_from_loc((clean_data['latitude'], clean_data['longitude']))
+        self.__data = clean_data
         return clean_data.copy()
 
     def clean_latlon(self):
@@ -70,7 +70,7 @@ class Place:
     @property
     def location(self):
         if self.latitude and self.longitude:
-            return (self.latitude, self.longitude)
+            return (float(self.latitude), float(self.longitude))
 
     @property
     def photopath(self):
