@@ -53,6 +53,7 @@ def add_buttons_handler(callback_query):
     state.set_state(message.chat.id, callback_query.data)
     text = f'Send {callback_query.data}'
     bot.send_message(message.chat.id, text=text)
+    bot.answer_callback_query(c.id)
 
 
 # Save
@@ -67,6 +68,7 @@ def confirm_button_handler(callback_query):
     bot.send_message(message.chat.id,
                      text,
                      reply_markup=get_keyboard([(elem,elem) for elem in state.buttons_confirm]))
+    bot.answer_callback_query(c.id)
 
 
 # YES ADD
@@ -78,10 +80,12 @@ def add_yes(callback_query):
         # add excepltions handler
         state.save_place(message.chat.id)
         bot.send_message(message.chat.id, 'Bot have saved it')
+        bot.answer_callback_query(c.id)
     except ValueError as er:
         bot.send_message(message.chat.id, 'Place must contains address or location')
         state.set_state(message.chat.id, state.ADD)
         send_add_dilog(message)
+        bot.answer_callback_query(c.id)
 
 
 # NO ADD
@@ -165,6 +169,7 @@ def list_places(message):
 # LIST PLACE
 @bot.callback_query_handler(func=lambda q: state.check(q.message.chat.id, state.LIST))
 def list_place(call):
+    bot.answer_callback_query(call.id)
     message = call.message
     if call.data == state.EXIT:
         state.set_state(message.chat.id, state.START)
@@ -188,6 +193,7 @@ def list_place(call):
 # LIST PLACE ATTR
 @bot.callback_query_handler(func= lambda q: state.check(q.message.chat.id, state.LIST_PLACE))
 def list_place_attr(call):
+    bot.answer_callback_query(call.id)
     message = call.message
     place = state.places(message.chat.id)
     if call.data == state.BACK:
@@ -222,21 +228,24 @@ def reset(message):
 
 # YES RESET
 @bot.callback_query_handler(func=lambda query: query.data == state.YES and state.check(query.message.chat.id, state.RESET))
-def yes_reset(callback_query):
-    message = callback_query.message
+def yes_reset(query):
+    message = query.message
     state.set_state(message.chat.id, state.START)
     state.base.reset(message.chat.id)
     text = 'All data has been deleted'
     bot.send_message(message.chat.id, text)
+    bot.answer_callback_query(query.id)
 
 
 # NO RESET
 @bot.callback_query_handler(func=lambda query: query.data == state.NO and state.check(query.message.chat.id, state.RESET))
-def no_reset(callback_query):
-    message = callback_query.message
+def no_reset(query):
+    message = query.message
     state.set_state(message.chat.id, state.START)
     text = 'Ok good'
     bot.send_message(message.chat.id, text)
+    bot.answer_callback_query(query.id)
+
 
 
 # DEST
@@ -270,12 +279,15 @@ def desc_button(query):
     message = query.message
     location = tuple(map(float, query.data.strip('()').split(',')))
     bot.send_location(query.message.chat.id, location[0], location[1])
+    bot.answer_callback_query(query.id)
+
 
 
 @bot.callback_query_handler(func=lambda q: state.check(q.message.chat.id, state.DEST) and q.data == state.EXIT)
 def desc_button(query):
     state.set_state(query.message.chat.id, state.START)
     bot.send_message(query.message.chat.id, 'ok')
+    bot.answer_callback_query(query.id)
 
 
 def main():
