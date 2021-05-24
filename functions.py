@@ -2,8 +2,7 @@ from dotenv import load_dotenv
 from telebot import types
 from time import time
 import os
-import shutil
-import boto3
+import shutil   
 
 
 dirname = 'photos'

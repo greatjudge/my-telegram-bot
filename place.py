@@ -12,9 +12,6 @@ class Place:
                 self.__data[key] = value
         self.clean()
 
-    def __str__(self):
-        return self.address
-
     def get_addr_from_loc(self, location):
         url = 'https://maps.googleapis.com/maps/api/geocode/json'
         params = {'latlng': f'{location[0]},{location[1]}', 'key': os.environ.get('GOOGLE_API')}
@@ -26,11 +23,11 @@ class Place:
     def clean(self):
         clean_data = {k: v for k, v in self.__data.items() if not v is None
                                                                 and k in self.fields}
-        self.clean_data = clean_data
-        self.__data = clean_data
+        #   self.__data = clean_data
         self.clean_latlon()
         if not clean_data.get('address') and 'latitude' in clean_data and 'longitude' in clean_data:
             clean_data['address'] = self.get_addr_from_loc((clean_data['latitude'], clean_data['longitude']))
+        return clean_data.copy()
 
     def clean_latlon(self):
         if self.__data.get('latitude'):
@@ -40,10 +37,27 @@ class Place:
 
     @property
     def data(self):
-        self.clean()
-        if not self.clean_data.get('address') and not (self.latitude and self.longitude):
+        return self.clean().copy()
+
+    @property
+    def clean_data(self):
+        clean_data = self.clean()
+        if not clean_data.get('address') and not (self.latitude and self.longitude):
             raise ValueError('Place must contains address or location')
-        return self.clean_data.copy()
+        return clean_data.copy()
+
+    @property
+    def buttons(self):
+        data = self.data
+        data.pop('longitude', None)
+        data.pop('latitude', None)
+        data.pop('photopath', None)
+        if self.location:
+            print(self.location)
+            data['location'] = self.location
+        if self.photopath:
+            data['photo'] = self.photopath
+        return tuple(data.keys())
 
     @property
     def latitude(self):
@@ -55,7 +69,8 @@ class Place:
 
     @property
     def location(self):
-        return (self.latitude, self.longitude)
+        if self.latitude and self.longitude:
+            return (self.latitude, self.longitude)
 
     @property
     def photopath(self):

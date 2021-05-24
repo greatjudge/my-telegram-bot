@@ -50,11 +50,11 @@ class MysqlBase(AbstractBase):
     def connect(self):
         try:
             connection = connector.connect(
-                user=os.environ.get('NEW_DB_USER'),
-                password=os.environ.get('NEW_DB_PASSWORD'),
-                host=os.environ.get('NEW_DB_HOST'),
-                port=int(os.environ.get('NEW_DB_PORT')),
-                database=os.environ.get('NEW_DB_NAME'),
+                user=os.environ.get('DB_USER'),
+                password=os.environ.get('DB_PASSWORD'),
+                host=os.environ.get('DB_HOST'),
+                port=int(os.environ.get('DB_PORT')),
+                database=os.environ.get('DB_NAME'),
             )
         except connector.Error as e:
             print(f"Error connecting to Mysql Platform: {e}")
@@ -110,7 +110,10 @@ class MysqlBase(AbstractBase):
 
     def add(self, user_id, place):
         # FIX... user data must be a function argument
-        data = place.data
+        print('in add', user_id, place)
+        print(place.data)
+        print()
+        data = place.clean_data
         data['user_id'] = user_id
         if place.photopath:
             data['photo'] = read_photo(place.photopath)

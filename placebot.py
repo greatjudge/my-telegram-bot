@@ -72,8 +72,9 @@ def confirm_button_handler(callback_query):
 # YES ADD
 @bot.callback_query_handler(func=lambda query: query.data == state.YES and state.check(query.message.chat.id, state.SAVE))
 def add_yes(callback_query):
+    message = callback_query.message
+    place = state.places(message.chat.id)
     try:
-        message = callback_query.message
         # add excepltions handler
         state.save_place(message.chat.id)
         bot.send_message(message.chat.id, 'Bot have saved it')
@@ -90,7 +91,7 @@ def add_no(callback_query):
     send_add_dilog(message)
 
 
-# ADDR
+# ADD ADDR
 @bot.message_handler(func=lambda m: state.check(m.chat.id, state.ADDR), content_types=['text'])
 def add_address(message):
     state.places(message.chat.id).address = message.text
@@ -98,7 +99,7 @@ def add_address(message):
     send_add_dilog(message)
 
 
-# LOCATION
+# ADD LOCATION
 @bot.message_handler(func=lambda m: state.check(m.chat.id, state.LOC), content_types=['location'])
 def add_location(message):
     state.places(message.chat.id).location = message.location
@@ -106,7 +107,7 @@ def add_location(message):
     send_add_dilog(message)
 
 
-# DESCRIPTION
+# ADD DESCRIPTION
 @bot.message_handler(func=lambda m: state.check(m.chat.id, state.DES), content_types=['text'])
 def add_description(message):
     state.places(message.chat.id).description = message.text
@@ -114,7 +115,7 @@ def add_description(message):
     send_add_dilog(message)
 
 
-# PHOTO
+# ADD PHOTO
 @bot.message_handler(content_types=['photo'], func=lambda m: state.check(m.chat.id, state.PHOTO))
 def add_photo(message):
     photopath = get_photopath(message.chat.id)
@@ -122,6 +123,19 @@ def add_photo(message):
     write_file(photopath, photo_from_tg(message, bot))
     state.set_state(message.chat.id, state.ADD)
     send_add_dilog(message)
+
+
+def places_buttons(state, uid):
+    place_list = state.list_places(str(uid))
+    place_num = [(place.address,str(num)) for num, place in enumerate(place_list)]
+    place_num.append(('exit', state.EXIT))
+    return place_num
+
+
+def attr_buttons(state, place):
+    buttons = [(key,key) for key in place.buttons]
+    buttons.append(('<<', state.BACK))
+    return buttons
 
 
 # LIST
@@ -135,20 +149,66 @@ def list_places(message):
         count = 5
     place_list = state.base.list(message.chat.id, count)
     if place_list:
-        sended_list = list()
-        for index, place in enumerate(place_list):
-            if place.address:
-                des = place.address
-            elif place.description:
-                des = place.description
-            else:
-                des = ''
-            sended_list.append(f'{index+1}: {des}')
-        sended_str = '\n'.join(sended_list)
+        state.list_set_places(message.chat.id, place_list)
+        bot.send_message(message.chat.id,
+                         'places:',
+                         reply_markup=get_keyboard(places_buttons(state,
+                                                                  message.chat.id),
+                                                   1))
     else:
+        state.set_state(message.chat.id, state.START)
         sended_str = 'You haven`t save places yet'
-    bot.send_message(message.chat.id, sended_str)
-    state.set_state(message.chat.id, state.START)
+        bot.send_message(message.chat.id, sended_str)
+
+
+# LIST PLACE
+@bot.callback_query_handler(func=lambda q: state.check(q.message.chat.id, state.LIST))
+def list_place(call):
+    message = call.message
+    if call.data == state.EXIT:
+        state.set_state(message.chat.id, state.START)
+        bot.send_message(message.chat.id, 'ok')
+    elif call.data == state.BACK:
+        bot.edit_message_reply_markup(chat_id=message.chat.id,
+                                      message_id=message.id,
+                                      reply_markup=get_keyboard(places_buttons(state,
+                                                                               message.chat.id),
+                                                                1))
+    else:
+        state.set_state(message.chat.id, state.LIST_PLACE)
+        place = state.list_places(message.chat.id)[int(call.data)]
+        state.set_place(message.chat.id, place)
+        bot.edit_message_reply_markup(chat_id=message.chat.id,
+                                      message_id=message.id,
+                                      reply_markup=get_keyboard(attr_buttons(state,
+                                                                             place)))
+#FIX ALL
+
+# LIST PLACE ATTR
+@bot.callback_query_handler(func= lambda q: state.check(q.message.chat.id, state.LIST_PLACE))
+def list_place_attr(call):
+    message = call.message
+    place = state.places(message.chat.id)
+    if call.data == state.BACK:
+        state.set_state(message.chat.id, state.LIST)
+        bot.edit_message_reply_markup(chat_id=message.chat.id,
+                                      message_id=message.id,
+                                      reply_markup=get_keyboard(places_buttons(state,
+                                                                               message.chat.id),
+                                                                1))
+    else:
+        if call.data == state.ADDR:
+            bot.send_message(message.chat.id, place.address)
+        elif call.data == state.DES:
+            bot.send_message(message.chat.id, place.description)
+        elif call.data == state.LOC:
+            if place.location: bot.send_location(message.chat.id,
+                                                 place.latitude,
+                                                 place.longitude)
+        elif call.data == state.PHOTO:
+            if place.photopath:
+                photo = get_photo(place.photopath)
+                bot.send_photo(message.chat.id, photo)
 
 
 # RESET
