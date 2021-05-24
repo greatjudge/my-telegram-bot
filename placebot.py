@@ -80,6 +80,7 @@ def add_yes(callback_query):
         bot.send_message(message.chat.id, 'Bot have saved it')
     except ValueError as er:
         bot.send_message(message.chat.id, 'Place must contains address or location')
+        state.set_state(message.chat.id, state.ADD)
         send_add_dilog(message)
 
 
