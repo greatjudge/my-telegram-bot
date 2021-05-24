@@ -20,13 +20,17 @@ class Place:
         data = res.json()
         return data['results'][0]['formatted_address']
 
+    #   FIX, REFACT
     def clean(self):
+        self.clean_latlon()
         clean_data = {k: v for k, v in self.__data.items() if not v is None
                                                                 and k in self.fields}
-        self.clean_latlon()
         if not clean_data.get('address') and 'latitude' in clean_data and 'longitude' in clean_data:
             clean_data['address'] = self.get_addr_from_loc((clean_data['latitude'], clean_data['longitude']))
+        print('__data', self.__data)
         self.__data = clean_data
+        print('__ data', self.__data)
+        print()
         return clean_data.copy()
 
     def clean_latlon(self):
