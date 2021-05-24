@@ -2,11 +2,12 @@ from dotenv import load_dotenv
 from telebot import types
 from time import time
 import os
-import shutil   
+import shutil
 
 
 dirname = 'photos'
 
+# FIX ALL REFACT
 
 def get_token():
     """ get telebot token from environment """

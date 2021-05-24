@@ -109,10 +109,6 @@ class MysqlBase(AbstractBase):
             connection.commit()
 
     def add(self, user_id, place):
-        # FIX... user data must be a function argument
-        print('in add', user_id, place)
-        print(place.data)
-        print()
         data = place.clean_data
         data['user_id'] = user_id
         if place.photopath:
