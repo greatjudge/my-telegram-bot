@@ -20,7 +20,7 @@ class Place:
         data = res.json()
         return data['results'][0]['formatted_address']
 
-    #   FIX, REFACT
+    #   FIX, REFACT, may be optimize
     def clean(self):
         self.clean_latlon()
         clean_data = {k: v for k, v in self.__data.items() if not v is None

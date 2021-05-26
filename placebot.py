@@ -53,7 +53,7 @@ def add_buttons_handler(callback_query):
     state.set_state(message.chat.id, callback_query.data)
     text = f'Send {callback_query.data}'
     bot.send_message(message.chat.id, text=text)
-    bot.answer_callback_query(c.id)
+    bot.answer_callback_query(callback_query.id)
 
 
 # Save
@@ -68,7 +68,7 @@ def confirm_button_handler(callback_query):
     bot.send_message(message.chat.id,
                      text,
                      reply_markup=get_keyboard([(elem,elem) for elem in state.buttons_confirm]))
-    bot.answer_callback_query(c.id)
+    bot.answer_callback_query(callback_query.id)
 
 
 # YES ADD
@@ -80,12 +80,12 @@ def add_yes(callback_query):
         # add excepltions handler
         state.save_place(message.chat.id)
         bot.send_message(message.chat.id, 'Bot have saved it')
-        bot.answer_callback_query(c.id)
+        bot.answer_callback_query(callback_query.id)
     except ValueError as er:
         bot.send_message(message.chat.id, 'Place must contains address or location')
         state.set_state(message.chat.id, state.ADD)
         send_add_dilog(message)
-        bot.answer_callback_query(c.id)
+        bot.answer_callback_query(callback_query.id)
 
 
 # NO ADD
@@ -148,10 +148,10 @@ def attr_buttons(state, place):
 def list_places(message):
     state.set_state(message.chat.id, state.LIST)
     str_count = message.text.replace('/list', '').strip()
-    if str_count.isdigit():
-        count = int(str_count)
-    else:
-        count = 5
+    count = int(str_count) if str_count.strip('-').isdigit() else 5
+    if count <= 0:
+        bot.send_message(message.chat.id, 'Ha ha, ok')
+        return
     place_list = state.base.list(message.chat.id, count)
     if place_list:
         state.list_set_places(message.chat.id, place_list)
@@ -253,7 +253,10 @@ def no_reset(query):
 def shortest_destination(message):
     state.set_state(message.chat.id, state.DEST)
     count = message.text.replace('/dest', '').strip()
-    count = int(count) if count.isdigit() else 5
+    count = int(count) if count.strip('-').isdigit() else 5
+    if count <= 0:
+        bot.send_message(message.chat.id, 'Ha ha, ok')
+        return
     state.set_count(message.chat.id, count)
     text = 'send your location'
     bot.send_message(message.chat.id, text)
