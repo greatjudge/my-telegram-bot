@@ -7,3 +7,6 @@ The bot must respond to three commands:
     2. /list - displaying added places
     3. /delete - delete place
     4. /resete - delete all placeses
+    
+Переписать класс Place с ипользованием дескрипторов данных.
+Вместо запросов SQL использоватьт Алхимию. (или другую библиотеку)
